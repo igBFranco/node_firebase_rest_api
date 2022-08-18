@@ -3,6 +3,7 @@
 const express = require("express");
 const cors = require("cors");
 const config = require('./config');
+const trainerRoutes = require('./routes/trainer-routes');
 
 const app = express();
 
@@ -11,6 +12,9 @@ app.use(express.json());
 
 //definindo a utilizacao do cors
 app.use(cors());
+
+//utilizando as rotas para treinadores
+app.use('/api', trainerRoutes.routes);
 
 //definindo a porta onde o servidor estara ouvindo
 app.listen(config.port, () => {
