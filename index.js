@@ -1,15 +1,34 @@
+'use strict'
+
 const express = require("express");
 const cors = require("cors");
-const firebase = require('firebase');
+const config = require('./config');
+const trainerRoutes = require('./routes/trainer-routes');
 
+const app = express();
+
+//configurando o Body Parser
+app.use(express.json());
+
+//definindo a utilizacao do cors
+app.use(cors());
+
+//utilizando as rotas para treinadores
+app.use('/api', trainerRoutes.routes);
+
+//definindo a porta onde o servidor estara ouvindo
+app.listen(config.port, () => {
+    console.log(`API rodando em ${config.url}`);
+})
+
+/*
 const firebaseConfig = {
-    apiKey: "AIzaSyAdsV_3vUf8JGNac2f2oDIkpU2eafEm0Sw",
-    authDomain: "node-firebase-rest-api-1aa2e.firebaseapp.com",
-    projectId: "node-firebase-rest-api-1aa2e",
-    storageBucket: "node-firebase-rest-api-1aa2e.appspot.com",
-    messagingSenderId: "665049429400",
-    appId: "1:665049429400:web:6ff730b13a4971636b67ed",
-    measurementId: "G-6RMSSND4GL"
+    apiKey: process.env.API_KEY,
+    authDomain: process.env.AUTH_DOMAIN,
+    projectId:process.env.PROJECT_ID,
+    storageBucket: process.env.STORAGE_BUCKET,
+    messagingSenderId: process.env.MESSAGING_SENDER_ID,
+    appId: process.env.APP_ID,
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -102,3 +121,4 @@ app.listen(3000, () => {
     console.log('API rodando em http://localhost:3000');
 })
 
+*/
