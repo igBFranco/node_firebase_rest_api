@@ -13,11 +13,11 @@ const router = express.Router();
 
 //criando as rotas para o recurso Trainer
 //definindo a rota para a listagem de treinadores
-router.get('/pokemons', getAllPokemons);
-router.post('/pokemons', addPokemon);
-router.get('/pokemons/:id', getPokemon);
-router.put('/pokemons/:id', updatePokemon);
-router.delete('/pokemons/:id', deletePokemon);
+router.get('/pokemon', getAllPokemons);
+router.post('/pokemon', addPokemon);
+router.get('/pokemon/:id', getPokemon);
+router.put('/pokemon/:id', updatePokemon);
+router.delete('/pokemon/:id', deletePokemon);
 
 module.exports = {
     routes: router
