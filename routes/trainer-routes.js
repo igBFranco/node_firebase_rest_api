@@ -1,24 +1,19 @@
+'use strict'
+
 //realizando as importacoes
 const express = require('express');
-const {
-    addTrainer,
-    getAllTrainers,
-    getTrainer,
-    updateTrainer,
-    deleteTrainer
-} = require('../controllers/trainerController');
-
-//incicializando as rotas do express
+const controller = require('../controllers/trainerController');
 const router = express.Router();
 
-//criando as rotas para o recurso Trainer
-//definindo a rota para a listagem de treinadores
-router.get('/trainers', getAllTrainers);
-router.post('/trainers', addTrainer);
-router.get('/trainers/:id', getTrainer);
-router.put('/trainers/:id', updateTrainer);
-router.delete('/trainers/:id', deleteTrainer);
+//instanciando o objeto da classe trainerController
+let _ctrl = new controller()
 
-module.exports = {
-    routes: router
-}
+//definindo as rotas
+router.get('/', _ctrl.get);
+router.get('/:id', _ctrl.getById);
+router.post('/', _ctrl.post);
+router.put('/:id', _ctrl.put);
+router.delete('/:id', _ctrl.delete);
+
+//exportando o modulo
+module.exports = router;
