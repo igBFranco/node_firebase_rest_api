@@ -29,7 +29,7 @@ trainerController.prototype.get = async (req,res) => {
 
 trainerController.prototype.getById = async (req,res) => {
     let trainer = await new repository().getById(req.params.id);
-    res.status(200).send(trainer)
+    res.status(200).send(trainer);
 }
 
 trainerController.prototype.delete = async (req,res) => {
