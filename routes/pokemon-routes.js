@@ -1,24 +1,18 @@
-//realizando as importacoes
-const express = require('express');
-const {
-    addPokemon,
-    getAllPokemons,
-    getPokemon,
-    updatePokemon,
-    deletePokemon
-} = require('../controllers/pokemonController');
+'use strict'
 
 //incicializando as rotas do express
+const express = require('express');
+const controller = require('../controllers/pokemonController');
 const router = express.Router();
 
-//criando as rotas para o recurso Trainer
-//definindo a rota para a listagem de treinadores
-router.get('/pokemon', getAllPokemons);
-router.post('/pokemon', addPokemon);
-router.get('/pokemon/:id', getPokemon);
-router.put('/pokemon/:id', updatePokemon);
-router.delete('/pokemon/:id', deletePokemon);
+let _ctrl = new controller();
 
-module.exports = {
-    routes: router
-}
+//criando as rotas para o recurso Pokemon
+//definindo a rota para a listagem de treinadores
+router.get('/', _ctrl.get);
+router.post('/', _ctrl.post);
+router.get('/:id', _ctrl.getById);
+router.put('/:id', _ctrl.put);
+router.delete('/:id', _ctrl.delete);
+
+module.exports = router;

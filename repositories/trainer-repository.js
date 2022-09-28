@@ -23,13 +23,29 @@ class trainerRepository {
     async getAll() {
         let trainers = await firestore.collection('trainers');
         let res = await trainers.get();
-        return res;
+        const trainersArray = [];
+        res.forEach(doc => {
+            const trainer = new Trainer(
+                doc.id,
+                doc.data().name,
+                doc.data().age,
+                doc.data().birthDate,
+                doc.data().city,
+                doc.data().email,
+                doc.data().genre,
+                doc.data().name,
+                doc.data().state,
+                doc.data().username
+            );
+            trainersArray.push(trainer);
+        })
+        return trainersArray;
     }
 
     async getById(id) {
         let trainer = await firestore.collection('trainers').doc(id);
         let res = await trainer.get();
-        return res;
+        return res.data();
     }
 
     async delete(id) {

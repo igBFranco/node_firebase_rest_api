@@ -14,9 +14,11 @@ app.use(express.json());
 //definindo a utilizacao do cors
 app.use(cors());
 
-//utilizando as rotas para treinadores
-app.use('/api', trainerRoutes.routes);
-app.use('/api', pokemonRoutes.routes);
+
+//utilizanod as rotas para trainers
+app.use('/api/trainers', trainerRoutes);
+
+app.use('/api/pokemon', pokemonRoutes);
 
 //definindo a porta onde o servidor estara ouvindo
 app.listen(config.port, () => {
