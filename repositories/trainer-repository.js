@@ -1,55 +1,36 @@
-'use strict'
-
-//definindo imports
-const firebase = require('../db');
-const Trainer = require('../models/trainer');
-const firestore = firebase.firestore();
+const repBase = require('../bin/base/repository-base');
 
 class trainerRepository {
-    constructor() {}
+    constructor() {
+        this._repBase = new repBase('trainer', 'trainers');
+    }
 
-    //o create sera responsavel por receber do controller o req.body com os dados e fazer a chamada com o firebase para a persistencia dos dados
     async create(data) {
-        let res = await firestore.collection('trainers').doc().set(data);
-        return res;
+        let trainerCreated = await this._repBase.create(data);
+        return this._repBase.getById(trainerCreated.id);
     }
 
     async update(id, data) {
-        let trainer = await firestore.collection('trainers').doc(id);
-        let res = await trainer.update(data);
-        return res;
+        let trainerUpdated = await this._repBase.update(id, {
+            name: data.name,
+            age: data.age,
+            city: data.city,
+            state: data.state,
+        });
+        return this._repBase.getById(trainerUpdated.id);
+        
     }
 
-    async getAll() {
-        let trainers = await firestore.collection('trainers');
-        let res = await trainers.get();
-        const trainersArray = [];
-        res.forEach(doc => {
-            const trainer = new Trainer(
-                doc.id,
-                doc.data().name,
-                doc.data().age,
-                doc.data().birthDate,
-                doc.data().city,
-                doc.data().email,
-                doc.data().genre,
-                doc.data().name,
-                doc.data().state,
-                doc.data().username
-            );
-            trainersArray.push(trainer);
-        })
-        return trainersArray;
+    async getAll() { 
+        return await this._repBase.getAll();
     }
 
-    async getById(id) {
-        let trainer = await firestore.collection('trainers').doc(id);
-        let res = await trainer.get();
-        return res.data();
+    async getById(id) { 
+        return await this._repBase.getById(id);
     }
 
-    async delete(id) {
-        return await firestore.collection('trainers').doc(id).delete();
+    async delete(id) { 
+        return await this._repBase.delete(id);
     }
 }
 
