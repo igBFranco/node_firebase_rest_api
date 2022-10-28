@@ -1,52 +1,35 @@
-'use strict'
-
-//definindo imports
-const firebase = require('../db');
-const Pokemon = require('../models/pokemon');
-const firestore = firebase.firestore();
+const repBase = require('../bin/base/repository-base');
 
 class pokemonRepository {
-    constructor() {}
+    constructor() {
+        this._repBase = new repBase('pokemon', 'pokemons');
+    }
 
-    //o create sera responsavel por receber do controller o req.body com os dados e fazer a chamada com o firebase para a persistencia dos dados
     async create(data) {
-        let res = await firestore.collection('pokemons').doc().set(data);
-        return res;
+        return await this._repBase.create(data);
     }
 
     async update(id, data) {
-        let pokemon = await firestore.collection('pokemons').doc(id);
-        let res = await pokemon.update(data);
-        return res;
+        return await this._repBase.update(id, {
+            number: data.number,
+            name: data.name,
+            type: data.type,
+            description: data.description,
+            weight: data.weight,
+            height: data.height
+        });
     }
 
     async getAll() {
-        let pokemon = await firestore.collection('pokemons');
-        let res = await pokemon.get();
-        const pokemonArray = [];
-        res.forEach(doc => {
-            const singlePokemon = new Pokemon(
-                doc.id,
-                doc.data().number,
-                doc.data().name,
-                doc.data().type,
-                doc.data().description,
-                doc.data().weight,
-                doc.data().height,
-            );
-            pokemonArray.push(singlePokemon);
-        })
-        return pokemonArray;
+        return await this._repBase.getAll();
     }
 
     async getById(id) {
-        let pokemon = await firestore.collection('pokemons').doc(id);
-        let res = await pokemon.get();
-        return res.data();
+       return await this._repBase.getById(id);
     }
 
     async delete(id) {
-        return await firestore.collection('pokemons').doc(id).delete();
+        return await this._repBase.delete(id);
     }
 }
 

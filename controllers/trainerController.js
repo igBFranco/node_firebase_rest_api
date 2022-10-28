@@ -1,41 +1,44 @@
 'use strict'
 
-//definindo imports
-require('../models/trainer');
-const repository = require('../repositories/trainer-repository');
+const trainerRepository = require('../repositories/trainer-repository')
+const ctrlBase = require('../bin/base/controller-base')
+const validators = require('../bin/lib/validators')
+const _repo = new trainerRepository()
 
-function trainerController () {
-
-}
+function trainerController() {}
 
 trainerController.prototype.post = async (req, res) => {
-    //criando um objeto para receber a execucao do repositorio
-    let resultado = await new repository().create(req.body);
-    //retornando uma resposta para a requisicao
-    res.status(201).send(resultado);
+  let _validator = new validators()
+
+  _validator.isRequired(req.body.name, 'Informe o seu nome')
+  _validator.isRequired(req.body.userName, 'Informe o seu nome de usuário')
+  _validator.isRequired(req.body.email, 'Informe o seu email')
+  _validator.isEmail(req.body.email, 'O email informado é inválido')
+
+  ctrlBase.post(_repo, _validator, req, res)
 }
 
-trainerController.prototype.put = async (req,res) => {
-    //criando um objeto para receber a execucao do repositorio
-    let resultado = await new repository().update(req.params.id, req.body);
-    //retornando uma resposta para a requisicao
-    res.status(202).send(resultado);
+trainerController.prototype.put = async (req, res) => {
+  let _validator = new validators()
+
+  _validator.isRequired(req.body.name, 'Informe o seu nome')
+  _validator.isRequired(req.body.userName, 'Informe o seu nome de usuário')
+  _validator.isRequired(req.body.email, 'Informe o seu email')
+  _validator.isEmail(req.body.email, 'O email informado é inválido')
+
+  ctrlBase.put(_repo, _validator, req, res)
 }
 
-trainerController.prototype.get = async (req,res) => {
-    let lista = await new repository().getAll();
-    res.status(200).send(lista);
+trainerController.prototype.get = async (req, res) => {
+  ctrlBase.get(_repo, req, res)
 }
 
-trainerController.prototype.getById = async (req,res) => {
-    let trainer = await new repository().getById(req.params.id);
-    res.status(200).send(trainer);
+trainerController.prototype.getById = async (req, res) => {
+  ctrlBase.getById(_repo, req, res)
 }
 
-trainerController.prototype.delete = async (req,res) => {
-    let trainer = await new repository().delete(req.params.id);
-    res.status(200).send(trainer);
+trainerController.prototype.delete = async (req, res) => {
+  ctrlBase.delete(_repo, req, res)
 }
 
-
-module.exports = trainerController;
+module.exports = trainerController
