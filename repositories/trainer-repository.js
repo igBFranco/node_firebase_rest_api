@@ -1,4 +1,7 @@
-const repBase = require('../bin/base/repository-base')
+const repBase = require('../bin/base/repository-base');
+const md5 = require('md5');
+const firebase = require('../db');
+const firestore = firebase.firestore();
 
 class trainerRepository {
   constructor() {
@@ -28,6 +31,16 @@ class trainerRepository {
 
   async delete(id) {
     return await this._repBase.delete(id)
+  }
+
+  async authenticate(email, password) {
+    let _hashPassword = md5(password);
+    const trainer = await firestore
+      .collection('trainers')
+      .where('email', '==', email)
+      .where('password', '==', _hashPassword)
+      .get()
+      return trainer;
   }
 }
 
